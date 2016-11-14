@@ -211,10 +211,6 @@ namespace Import
             //using (var client = new HttpClient())
             //using ()
             {
-                var entry = _arc.GetEntry(media.Name);
-
-                if (entry == null) //if (!repository.IsMediaExistsAsync(media.Name).Result)
-                {
                     //TODO download and store
 
                     //var destFile = Path.Combine(StorePath, media.Name);
@@ -238,22 +234,6 @@ namespace Import
                     // }
 
                     return false;
-                }
-
-                if (string.IsNullOrEmpty(media.Hash))
-                {
-                    using (var stream = entry.Open()) //(var stream = repository.GetMediaAsync(media.Name).Result)
-                    {
-                        //if (stream != null)
-                        {
-                            var hash = md5.ComputeHash(stream);
-                            media.Hash = BitConverter.ToString(hash).Replace("-", "");
-                        }
-                    }
-                }
-                // TODO: check if name exists
-
-                return true;
             }
         }
 

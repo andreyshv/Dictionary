@@ -13,15 +13,16 @@
     "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail"
   },
   "dependencies": {
-    "@angular/common": "~2.1.2",
-    "@angular/compiler": "~2.1.2",
-    "@angular/core": "~2.1.2",
-    "@angular/forms": "~2.1.2",
-    "@angular/http": "~2.1.2",
-    "@angular/platform-browser": "~2.1.2",
-    "@angular/platform-browser-dynamic": "~2.1.2",
-    "@angular/router": "~3.1.2",
-    "@angular/material": "^2.0.0-alpha.9-3",
+    "@angular/common": "~2.2.0",
+    "@angular/compiler": "~2.2.0",
+    "@angular/core": "~2.2.0",
+    "@angular/forms": "~2.2.0",
+    "@angular/http": "~2.2.0",
+    "@angular/platform-browser": "~2.2.0",
+    "@angular/platform-browser-dynamic": "~2.2.0",
+    "@angular/router": "~3.2.0",
+    "@angular/upgrade": "~2.2.0",
+    "@angular/material": "^2.0.0-alpha.10",
 
     "core-js": "^2.4.1",
     "rxjs": "5.0.0-beta.12",
@@ -60,7 +61,7 @@
     
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
-    "webpack-merge": "^0.15.0",
+    "webpack-merge": "^0.16.0",
 
     "aspnet-webpack": "^1.0.24",
     "webpack-hot-middleware": "^2.13.2"

@@ -27,4 +27,4 @@ Next stages
 ☐ Fix all src todo's
 ☐ Publish to Azure
 ☐ Performance testing/optimization
-    ☐ cashing https://andrewlock.net/adding-cache-control-headers-to-static-files-in-asp-net-core/  
+    ☐ cache control https://andrewlock.net/adding-cache-control-headers-to-static-files-in-asp-net-core/  
