@@ -1,0 +1,17 @@
+<div *ngIf="collection">
+    <h2>{{collection.name}} details</h2>
+    <div>
+        <label>id: </label>{{collection.id}}
+    </div>
+    <div>
+        <label>name: </label>
+        <input [(ngModel)]="collection.name" placeholder="name">
+    </div>
+    <div>
+        <label>description: </label>
+        <input [(ngModel)]="collection.description" placeholder="description">
+    </div>
+    <button (click)="goBack()">Back</button>
+    <button (click)="save()">Save</button>
+    <my-queue></my-queue>
+</div>

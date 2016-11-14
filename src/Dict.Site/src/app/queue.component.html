@@ -1,0 +1,10 @@
+<h2>Queue</h2>
+<ul class="cards">
+    <li *ngFor="let card of cards">
+        <span class="badge">{{card.id}}</span> {{card.word}}<br>
+        {{card.transcription}}<br>
+        {{card.translation}}<br>
+        {{card.imageURL}}<br>
+        {{card.soundURL}}
+    </li>
+</ul>

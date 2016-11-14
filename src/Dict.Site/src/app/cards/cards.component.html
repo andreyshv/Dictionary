@@ -1,0 +1,21 @@
+<h2>Cards</h2>
+<loading-container [loading]="loading"></loading-container>
+<div *ngIf="collection">
+    <h3>{{collection.name}}</h3>
+    <h4>{{collection.description}}</h4>
+    <input #word />
+    <button (click)="add(word.value); word.value=''">Add card</button>
+    <ul class="cards"
+        infinite-scroll
+        [infiniteScrollDistance]="1"
+        (scrolled)="onScrollDown()">
+        <li *ngFor="let card of cards"
+            (click)="doEdit(card.id)">
+            <span class="badge">{{card.id}}</span> {{card.word}}<br>
+            {{card.transcription}}<br>
+            {{card.translation}}<br>
+            {{card.imageURL}}<br>
+            {{card.soundURL}}
+        </li>
+    </ul>
+</div>

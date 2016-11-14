@@ -1,0 +1,21 @@
+<h2>My Collections</h2>
+<div>
+  <label>Collection Name:</label> <input #colName />
+  <label>Description:</label> <input #colDescr />
+  <button (click)="add(colName.value, colDescr.value); colName.value=''; colDescr.value=''">Add</button>
+</div>
+<ul class="collections">
+    <li *ngFor="let collection of collections"
+        [class.selected]="collection === activeItem" 
+        (click)="onSelect(collection)">
+        <span class="badge">{{collection.id}}</span> {{collection.name}}
+        <button class="delete" (click)="delete(collection); $event.stopPropagation()">x</button>
+    </li>
+</ul>
+<div *ngIf="activeItem">
+  <h2>
+    Active Collection: {{activeItem.name | uppercase}}
+  </h2>
+  {{activeItem.description}}<br>
+  <button (click)="gotoDetail()">View Details</button>
+</div>

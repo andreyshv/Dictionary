@@ -1,0 +1,30 @@
+Dictionary:
+    Backend:
+        ☐ learning queue generator, choose algorithm
+        ☐ add local dict refereces (dotnet, ...)
+        ☐ add external dict refereces (lingvo, ...)
+    WordNet:
+        ☐ check wordnet exceptions list (not found; > 2 words: better good well; exception is morpth string: harder -> hard)
+        ☐ add fuzzy search (goldendict: wordfinder.cc; https://github.com/hunspell/hunspell; or symspell.cs)
+        ☐ add unit tests (use texts collection, ...)
+    Frontend:
+        ✔ Cards CRUD @done (17.10.2016, 0:45:38)
+        ☐ refine Card view, add img/sound
+            ☐ add img search
+            ☐ add soung load / generation
+            ☐ add users media storage
+        ☐ add tests
+        ☐ <component>.goBack() - limit history to pervent "unexpected" behavior
+        ☐ data validation
+        ☐ rewrite services: return async data by lambda funcs
+        ☐ add animations https://angular.io/docs/ts/latest/guide/animations.html & https://angular.io/docs/ts/latest/guide/router.html (Adding animations to the route component)
+
+Common Tasks
+☐ Add method's argument validation
+
+Next stages
+☐ Add Users (authentication, settings)
+☐ Fix all src todo's
+☐ Publish to Azure
+☐ Performance testing/optimization
+    ☐ cashing https://andrewlock.net/adding-cache-control-headers-to-static-files-in-asp-net-core/  

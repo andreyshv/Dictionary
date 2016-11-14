@@ -1,0 +1,28 @@
+<div *ngIf="card">
+    <h2>{{card.word}} details</h2>
+    <div>
+        <label>id: </label>{{card.id}}
+    </div>
+    <div>
+        <label>word: </label>
+        <input [(ngModel)]="card.word" placeholder="word">
+    </div>
+    <div>
+        <label>transcription: </label>
+        <input [(ngModel)]="card.transcription" placeholder="transcription">
+    </div>
+    <div>
+        <label>translation: </label>
+        <input [(ngModel)]="card.translation" placeholder="translation">
+    </div>
+    <div>
+        <img class="thumbimg" [src]="card.imageURL">
+    </div>
+    <div>
+        <label>sound: </label>
+        <input [(ngModel)]="card.soundURL" placeholder="soundURL">
+    </div>
+    <image-search [card]="card"></image-search>
+    <button (click)="goBack()">Back</button>
+    <button (click)="save()">Save</button>
+</div>

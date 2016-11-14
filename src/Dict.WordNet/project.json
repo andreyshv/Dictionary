@@ -1,0 +1,31 @@
+{
+    "name": "Dict.WordNet",
+    "version": "1.0.0",
+    "buildOptions": {
+        "emitEntryPoint": true,
+        "debugType": "portable",
+        "compile": {
+            "exclude": "exclude"
+        }
+    },
+    "dependencies": {
+        "Microsoft.EntityFrameworkCore.Sqlite": "1.1.0-preview1-final",
+        "Newtonsoft.Json": "9.0.1"
+        // "Dict.Models": {
+        //     "version": "1.0.0",
+        //     "target": "project"
+        // }
+    },
+    "frameworks": {
+        "netcoreapp1.0": {
+            "dependencies": {
+                "Microsoft.NETCore.App": {
+                    "version": "1.1.0-*",
+                    "type": "platform"
+                }
+            },
+            "imports": "dnxcore50"
+        }
+    },
+    "tools": {}
+}

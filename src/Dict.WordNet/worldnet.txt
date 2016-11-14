@@ -1,0 +1,152 @@
+﻿
+WorldNet documentation
+
+http://wordnet.princeton.edu/wordnet/documentation/
+
+Based on project http://www.ebswift.com (.net implementation of worldnet)
+
+Fuzzy search:
+	- http://blog.faroo.com/2012/06/07/improved-edit-distance-based-spelling-correction/
+	- http://www.loresoft.com/The-NetSpell-project
+
+other usefull libs:
+	- https://github.com/NaturalNode/natural
+
+
+
+//------------------------------------------------
+
+new Search(word, ...)
+	.do_search()
+	.findtheinfo()
+
+		new Indexes(word, ...)
+		Index.lookup(word, ...)
+		db.binSearch(word, pos) -> binSearch(word, index(pos))
+	.WNOverview()
+		new SynSet(offset, pos, word, ...)
+
+	SynSet().defn - word definition -> Search.senses
+
+	Search.buf - debug info?
+
+//-------------------------------------------------
+// Files format 
+
+--- file: Index.pos ---
+
+lemma  pos  synset_cnt  p_cnt  [ptr_symbol...]  sense_cnt  tagsense_cnt   synset_offset  [synset_offset...] 
+
+index n 5 5 @ ~ #p %p + 5 2 13873264 06652323 06825275 06503777 05575014 
+
++ lemma
+	(index) lower case ASCII text of word or collocation. Collocations are formed by joining individual words with an underscore (_) character.
++ pos
+	(n) Syntactic category: n for noun files, v for verb files, a for adjective files, r for adverb files.
++ synset_cnt
+	(5) Number of synsets that lemma is in. This is the number of senses of the word in WordNet. See Sense Numbers below for a discussion of how sense numbers are assigned and the order of synset_offset s in the index files.
+- p_cnt
+	(5) Number of different pointers that lemma has in all synsets containing it.
+- ptr_symbol
+	(@ ~ #p %p +) A space separated list of p_cnt different types of pointers that lemma has in all synsets containing it. See wninput(5WN) for a list of pointer_symbol s. 
+	If all senses of lemma have no pointers, this field is omitted and p_cnt is 0.
+- sense_cnt
+	(5) Same as synset_cnt above. This is redundant, but the field was preserved for compatibility reasons.
+? tagsense_cnt
+	(2) Number of senses of lemma that are ranked according to their frequency of occurrence in semantic concordance texts.
++ synset_offset
+	(13873264 06652323 06825275 06503777 05575014) Byte offset in data.pos file of a synset containing lemma. Each synset_offset in the list corresponds to a different sense of lemma in WordNet. 
+	synset_offset is an 8 digit, zero-filled decimal integer that can be used with fseek(3) to read a synset from the data file. When passed to read_synset(3WN) along with the syntactic category, 
+	a data structure containing the parsed synset is returned.
+
+--- file: data.pos ---
+
+synset_offset  lex_filenum  ss_type  w_cnt  word  lex_id  [word  lex_id...]  p_cnt  [ptr...]  [frames...]  |   gloss 
+
+13873264 24 n 01 index 0 003 @ 13872501 n 0000 + 00704200 v 0101 ~ 05128135 n 0000 | a numerical scale used to compare variables with one another or with some reference number
+06652323 10 n 04 index 1 index_number 0 indicant 0 indicator 0 007 @ 06648784 n 0000 ~ 06652665 n 0000 ~ 06652966 n 0000 ~ 06653626 n 0000 ~ 06653830 n 0000 ~ 06654467 n 0000 ~ 06654573 n 0000 | a number or ratio (a value on a scale of measurement) derived from a series of observed facts; can reveal relative changes as a function of time
+06825275 10 n 03 exponent 0 power 0 index 2 004 @ 06821578 n 0000 + 02976819 a 0101 ~ 05869901 n 0000 ~ 06825489 n 0000 | a mathematical notation indicating the number of times a quantity is multiplied by itself
+06503777 10 n 01 index 0 007 @ 06492991 n 0000 #p 06402448 n 0000 + 02948871 a 0101 + 02359108 v 0101 + 02478240 v 0101 %p 06303887 n 0000 ~ 06504031 n 0000 | an alphabetical listing of names and topics along with page numbers where they are discussed
+05575014 08 n 03 index 0 index_finger 0 forefinger 0 001 @ 05574137 n 0000 | the finger next to the thumb
+
++ synset_offset
+	(13873264) Current byte offset in the file represented as an 8 digit decimal integer.
++ lex_filenum
+	-> findExample() in SynSet.cs
+	(24 - noun.relation - nouns denoting relations between people or things or ideas;
+	 10 - noun.communication - nouns denoting communicative processes and contents;
+	 08 - noun.body - nouns denoting body parts)
+	Two digit decimal integer corresponding to the lexicographer file name containing the synset. See lexnames(5WN) for the list of filenames and their corresponding numbers.
++ ss_type
+	(n) One character code indicating the synset type
++ w_cnt
+	(01) Two digit hexadecimal integer indicating the number of words in the synset.
++ word
+	(index) (outback(a))
+	ASCII form of a word as entered in the synset by the lexicographer, with spaces replaced by underscore characters (_).  , 
+	in contrast to its form in the corresponding index. pos file, that contains only lower-case forms. In data.adj, a word is followed by a syntactic marker if one 
+	was specified in the lexicographer file (markers: p, a, ip). 
+	A syntactic marker is appended, in parentheses, onto word without any intervening spaces. See wninput(5WN) for a list of the syntactic markers for adjectives.
++ lex_id	
+	-> findExample() in SynSet.cs
+	(0) One digit hexadecimal integer that, when appended onto lemma, uniquely identifies a sense within a lexicographer file. lex_id numbers usually start with 0, 
+	and are incremented as additional senses of the word are added to the same file, although there is no requirement that the numbers be consecutive or begin with 0. 
+	Note that a value of 0 is the default, and therefore is not present in lexicographer files.
+p_cnt
+	(003) Three digit decimal integer indicating the number of pointers from this synset to other synsets. If p_cnt is 000 the synset has no pointers.
+ptr
+	(@ 13872501 n 0000
+	 + 00704200 v 0101
+	 ~ 05128135 n 0000) 
+	A pointer from this synset to another. ptr is of the form:
+	    pointer_symbol  synset_offset  pos  source/target 
+    where synset_offset is the byte offset of the target synset in the data file corresponding to pos.
+	The source/target field distinguishes lexical and semantic pointers. It is a four byte field, containing two two-digit hexadecimal integers. 
+	The first two digits indicates the word number in the current (source) synset, the last two digits indicate the word number in the target synset. 
+	A value of 0000 means that pointer_symbol represents a semantic relation between the current (source) synset and the target synset indicated by synset_offset.
+	A lexical relation between two words in different synsets is represented by non-zero values in the source and target word numbers. 
+	The first and last two bytes of this field indicate the word numbers in the source and target synsets, respectively, between which the relation holds. 
+	Word numbers are assigned to the word fields in a synset, from left to right, beginning with 1.
+	See wninput(5WN) for a list of pointer_symbol s, and semantic and lexical pointer classifications.
+frames
+	In data.verb only, a list of numbers corresponding to the generic verb sentence frames for word s in the synset. frames is of the form:
+		f_cnt + f_num  w_num  [ +   f_num  w_num...] 
+	where 
+		f_cnt a two digit decimal integer indicating the number of generic frames listed, 
+		f_num is a two digit decimal integer frame number, 
+		w_num is a two digit hexadecimal integer indicating the word in the synset that the frame applies to. As with pointers, 
+		if this number is 00, f_num applies to all word s in the synset. If non-zero, it is applicable only to the word indicated. Word numbers are assigned as described for pointers. 
+	Each f_num  w_num pair is preceded by a + . See wninput(5WN) for the text of the generic sentence frames.
+gloss
+	(a numerical scale used to compare variables with one another or with some reference number)
+	Each synset contains a gloss. A gloss is represented as a vertical bar (|), followed by a text string that continues until the end of the line. 
+	The gloss may contain a definition, one or more example sentences, or both.
+
+
+-----------------------------------------------------------------------------------------------------------
+
+index
+
+shadow n 9 3 @ ~ + 9 6 14008429 08663881 05906160 07537657 06659391 05162732 13982928 10708600 10604811
+tincture n 4 4 @ ~ + ; 4 0 15010563 06659391 04966407 04446256
+trace n 6 4 @ ~ #p + 6 5 13795501 06659391 07178814 04470508 04469642 06659799
+vestige n 1 2 @ ~ 1 1 06659391
+
+data
+
+vestige:
+06659391 10 n 04 trace 0 vestige 0 tincture 0 shadow 0 002 @ 06810027 n 0000 ~ 06659617 n 0000 | an indication that something has been present; "there wasn't a trace of evidence for the claim"; "a tincture of condescension"   
+trace:
+13795501 23 n 04 trace 0 hint 1 tint 0 suggestion 0 003 @ 13782456 n 0000 + 02160493 v 0101 ~ 13795739 n 0000 | a just detectable amount; "he speaks French with a trace of an accent"; "a hint mockery in her manner"; "a tint of glamour"   
+07178814 10 n 03 touch 1 trace 1 ghost 0 001 @ 07177331 n 0000 | a suggestion of some quality; "there was a touch of sarcasm in his tone"; "he detected a ghost of a smile on her face"   
+04470508 06 n 02 tracing 0 trace 0 003 @ 03239009 n 0000 + 01698271 v 0201 + 01585566 v 0201 | a drawing created by superimposing a semitransparent sheet of paper on the original image and copying on it the lines of the original image   
+04469642 06 n 01 trace 1 002 @ 03676175 n 0000 #p 03499831 n 0000 | either of two lines that connect a horse's harness to a wagon or other vehicle or to a whiffletree   
+06659799 10 n 01 trace 2 003 @ 06811608 n 0000 + 02160493 v 0101 + 02008366 v 0101 | a visible mark (as a footprint) left by the passage of person or animal or vehicle   
+00627767 31 v 02 decipher 0 trace 4 001 @ 00626756 v 0000 01 + 08 00 | read with difficulty; "Can you decipher this letter?"; "The archeologist traced the hieroglyphs"
+00731071 31 v 02 trace 0 follow 0 003 $ 02460829 v 0000 $ 00118572 v 0000 @ 00646245 v 0000 01 + 08 00 | follow, discover, or ascertain the course of development of something; "We must follow closely the economic development is Cuba"; "trace the student's progress"; "trace one's ancestry"
+01585566 35 v 05 trace 0 draw 1 line 1 describe 0 delineate 0 017 $ 01694189 v 0000 $ 01647006 v 0000 @ 00509113 v 0000 + 03178190 n 0501 + 00902424 n 0502 + 06812755 n 0301 + 08630343 n 0302 + 00264656 n 0301 + 03239009 n 0201 + 04470508 n 0102 + 04470252 n 0101 + 00940235 n 0101 ~ 01586063 v 0000 01698271 36 v 01 trace 0 003 @ 01697776 v 0000 + 04470508 n 0102 + 04470252 n 0101 01 + 08 00 | copy by following the lines of the original drawing on a transparent sheet placed upon it; make a tracing of; "trace a design"; "trace a pattern"
+
+lexem, { synset } -> synset.lexemId = lexem.Id
+synset, { lexem } -> lexem.synsetId = stnset.Id
+SynLex <lexemId, synsetId>
+
