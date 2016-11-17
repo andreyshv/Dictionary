@@ -28,15 +28,15 @@ namespace Models
         { 
             get
             {
-                return string.IsNullOrEmpty(ImageName) ? "" : $"/{CardRepository.STATIC_DIR}/{ImageName}";
+                return string.IsNullOrEmpty(ImageName) ? "" : $"/{CardRepository.MEDIA_DIR}/{ImageName}";
             } 
             set
             {
                 if (!string.IsNullOrEmpty(value)) 
                 {
-                    if (value.StartsWith("/" + CardRepository.STATIC_DIR))
+                    if (value.StartsWith("/" + CardRepository.MEDIA_DIR))
                     {
-                        ImageName = value.Substring(CardRepository.STATIC_DIR.Length);
+                        ImageName = value.Substring(CardRepository.MEDIA_DIR.Length);
                         ExtImageURL = null; 
                     }
                     else
@@ -67,15 +67,15 @@ namespace Models
         { 
             get
             {    
-                return string.IsNullOrEmpty(SoundName) ? "" : $"/{CardRepository.STATIC_DIR}/{SoundName}";
+                return string.IsNullOrEmpty(SoundName) ? "" : $"/{CardRepository.MEDIA_DIR}/{SoundName}";
             } 
             set
             {
                 if (!string.IsNullOrEmpty(value)) 
                 {
-                    if (value.StartsWith("/" + CardRepository.STATIC_DIR))
+                    if (value.StartsWith("/" + CardRepository.MEDIA_DIR))
                     {
-                        SoundName = value.Substring(CardRepository.STATIC_DIR.Length);
+                        SoundName = value.Substring(CardRepository.MEDIA_DIR.Length);
                         ExtSoundURL = null; 
                     }
                     else

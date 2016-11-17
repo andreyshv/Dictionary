@@ -21,18 +21,18 @@ namespace Models
         public CardRepository(DictContext context, IHostingEnvironment env, ILogger<CardRepository> logger)
         {
             _context = context;
-            _storePath = Path.Combine(env.ContentRootPath, STATIC_DIR);
+            _storePath = Path.Combine(env.ContentRootPath, MEDIA_DIR);
             _logger = logger;
         }
 
         public CardRepository(DictContext context, string contentRootPath, ILogger<CardRepository> logger)
         {
             _context = context;
-            _storePath = Path.Combine(contentRootPath, STATIC_DIR);
+            _storePath = Path.Combine(contentRootPath, MEDIA_DIR);
             _logger = logger;
         }
 
-        public const string STATIC_DIR = "static";
+        public const string MEDIA_DIR = "media";
 
         #region ICardRepository implementation
         public async Task<IEnumerable<Card>> GetLearnQueueAsync(int collectionId)
