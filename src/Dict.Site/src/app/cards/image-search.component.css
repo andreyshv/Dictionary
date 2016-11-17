@@ -1,3 +1,11 @@
+.thumbimg {
+    width: 128px;
+    height: 128px;
+    background: lightgray;
+    border-width: 1px;
+    border-color: gray;
+}
+
 img {
     max-width: 120px;
     max-height: 120px;

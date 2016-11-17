@@ -47,6 +47,12 @@ module.exports = {
         test: /\.css$/,
         include: helpers.root('src', 'app'),
         loader: 'raw'
+      },
+      // SASS loader for component-scoped styles
+      {
+        test: /\.scss$/,
+        include: helpers.root('src', 'app'),
+        loaders: ['raw', 'sass?sourceMap']
       }
     ]
   },

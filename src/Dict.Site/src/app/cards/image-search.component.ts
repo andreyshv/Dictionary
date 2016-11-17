@@ -24,22 +24,22 @@ export class ImageSearchComponent implements OnInit {
         if (!query || query.length == 0)
             return;
 
-        this.service.searchImages(query)
-            .then(value => { this.imageInfos = value });
+        // this.service.searchImages(query)
+        //     .then(value => { this.imageInfos = value });
 
         // -- test --
                 
-        // let urls = [
-        //     'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTWntCD6H8HD-JmxVTFvXyX7RUUOXw874NCtsNQ5th3PsfAxNvNPgZ-ky4'
-        // ];
+        let urls = [
+            'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTWntCD6H8HD-JmxVTFvXyX7RUUOXw874NCtsNQ5th3PsfAxNvNPgZ-ky4'
+        ];
 
-        // let infos: ImageInfo[] = [];
-        // for (let i = 0; i < urls.length; i++) {
-        //     let info = new ImageInfo(urls[i], (i%2===0) ? `URL: ${urls[i]}` : null);
-        //     infos.push(info);
-        // }
+        let infos: ImageInfo[] = [];
+        for (let i = 0; i < urls.length; i++) {
+            let info = new ImageInfo(urls[i], (i%2===0) ? `URL: ${urls[i]}` : null);
+            infos.push(info);
+        }
 
-        // this.imageInfos = infos;
+        this.imageInfos = infos;
     }
 
     select(url: string) {

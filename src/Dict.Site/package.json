@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/core-js": "^0.9.34",
-    "@types/node": "^6.0.46",
+    "@types/node": "^6.0.48",
     "@types/jasmine": "^2.5.37",
     
     "jasmine-core": "^2.5.2",
@@ -46,22 +46,24 @@
     "karma-webpack": "^1.8.0",
     "phantomjs-prebuilt": "^2.1.13",
     "rimraf": "^2.5.4",
-    "typescript": "~2.0.9",
+    "typescript": "~2.0.10",
 
     "angular2-template-loader": "^0.6.0",
+    "node-sass": "^3.13.0",
+    "sass-loader": "^4.0.2",
     "css-loader": "^0.25.0",
+    "style-loader": "^0.13.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "html-loader": "^0.4.4",
     "html-webpack-plugin": "^2.24.1",
     "null-loader": "^0.1.1",
     "raw-loader": "^0.5.1",
-    "style-loader": "^0.13.1",
-    "ts-loader": "^1.2.0",
+    "ts-loader": "^1.2.1",
     
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
-    "webpack-merge": "^0.16.0",
+    "webpack-merge": "^0.17.0",
 
     "aspnet-webpack": "^1.0.24",
     "webpack-hot-middleware": "^2.13.2"

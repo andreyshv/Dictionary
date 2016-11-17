@@ -5,7 +5,9 @@
 	<button (click)="search(word.value);">Search</button>
 	<div *ngFor="let info of imageInfos"
 			 class="tooltip">
-		<img class="thumbimg" (click)="select(info.url)" src="{{info.url}}">
+		<div class="thumbimg"> 
+			<img (click)="select(info.url)" src="{{info.url}}">
+		</div>
 		<span class="tooltiptext" *ngIf="info.tooltip">{{info.tooltip}}</span>
 	</div>
 </div>

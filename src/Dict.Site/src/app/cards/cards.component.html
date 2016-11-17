@@ -1,11 +1,23 @@
 <h2>Cards</h2>
 <loading-container [loading]="loading"></loading-container>
-<div *ngIf="collection">
+<div *ngIf="collection" class="cards-list">
     <h3>{{collection.name}}</h3>
     <h4>{{collection.description}}</h4>
     <input #word />
     <button (click)="add(word.value); word.value=''">Add card</button>
-    <ul class="cards"
+    <md-card *ngFor="let card of cards" (click)="edit(card.id)">
+        <md-card-title-group>
+            <md-card-title>{{card.word}}</md-card-title>
+            <md-card-subtitle>{{card.translation}}</md-card-subtitle>
+            <img md-card-md-image src="{{card.imageURL}}">
+        </md-card-title-group>
+        <md-card-actions>
+            <button md-mini-fab color="primary" [disabled]="!card.soundURL" (click)="play(card.soundURL); $event.stopPropagation()">
+                <md-icon>play_arrow</md-icon>
+            </button>
+        </md-card-actions>
+    </md-card>
+    <!--ul class="cards"
         infinite-scroll
         [infiniteScrollDistance]="1"
         (scrolled)="onScrollDown()">
@@ -17,5 +29,5 @@
             {{card.imageURL}}<br>
             {{card.soundURL}}
         </li>
-    </ul>
+    </ul-->
 </div>

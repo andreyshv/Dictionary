@@ -11,7 +11,8 @@ import { LoadingContainerComponent, LoadingPage } from '../../ext/loading-contai
 @Component({
     //moduleId: module.id,
     selector: 'my-cards',
-    templateUrl: 'cards.component.html'
+    templateUrl: 'cards.component.html',
+    styleUrls: ['cards.component.scss']
 })
 export class CardsComponent extends LoadingPage implements OnInit {
     collection: Collection;
@@ -51,11 +52,16 @@ export class CardsComponent extends LoadingPage implements OnInit {
         }
     }
 
-    doEdit(cardId: number) {
+    edit(cardId: number) {
         this.router.navigate(['/card-detail', cardId]);
     }
 
     add(word: string) {
         this.router.navigate(['/new-card', { collectionId: this.collection.id, word: word }]);
+    }
+
+    play(soundURL: string) {
+        let audio = new Audio(soundURL);
+        audio.play();
     }
 }

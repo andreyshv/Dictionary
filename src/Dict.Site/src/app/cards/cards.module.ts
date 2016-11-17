@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {MaterialModule} from '@angular/material';
 
 import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 import { LoadingContainerComponent } from '../../ext/loading-container.component';
@@ -19,7 +20,8 @@ import { CardsRoutingModule } from './cards-routing.module';
         CommonModule,
         FormsModule,
         InfiniteScrollModule,
-        CardsRoutingModule
+        CardsRoutingModule,
+        MaterialModule.forRoot()
     ],
     exports: [],
     declarations: [
