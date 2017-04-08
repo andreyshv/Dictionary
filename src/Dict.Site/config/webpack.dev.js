@@ -5,9 +5,6 @@ var helpers = require('./helpers');
 
 module.exports = webpackMerge(commonConfig, {
 
-  // Switch loaders to debug mode.
-  debug: true,
-
   devtool: 'cheap-module-eval-source-map',
 
   // The HtmlWebpackPlugin (added in webpack.common.js) use the publicPath and the filename settings to generate appropriate <script> and <link> tags into the index.html
@@ -26,16 +23,6 @@ module.exports = webpackMerge(commonConfig, {
 
   devServer: {
     historyApiFallback: true,
-    // historyApiFallback: {
-    //   rewrites: [
-    //       // shows views/landing.html as the landing page
-    //       { from: /^\/$/, to: '/dist/index.html' },
-    //       // shows views/subpage.html for all routes starting with /subpage
-    //       { from: /^\/heroes/, to: '/dist/heroes' },
-    //       // shows views/404.html on all other pages
-    //       { from: /./, to: '/dist/404.html' },
-    //   ],
-    // },
 
     proxy: {
       '/api': {

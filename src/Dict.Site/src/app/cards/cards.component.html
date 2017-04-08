@@ -1,10 +1,11 @@
 <h2>Cards</h2>
-<loading-container [loading]="loading"></loading-container>
-<div *ngIf="collection" class="cards-list">
+<div *ngIf="collection">
     <h3>{{collection.name}}</h3>
     <h4>{{collection.description}}</h4>
     <input #word />
     <button (click)="add(word.value); word.value=''">Add card</button>
+</div>
+<div class="cards-list">
     <md-card *ngFor="let card of cards" (click)="edit(card.id)">
         <md-card-title-group>
             <md-card-title>{{card.word}}</md-card-title>
@@ -17,6 +18,7 @@
             </button>
         </md-card-actions>
     </md-card>
+    <loading-container [loading]="loading"></loading-container>
     <!--ul class="cards"
         infinite-scroll
         [infiniteScrollDistance]="1"
