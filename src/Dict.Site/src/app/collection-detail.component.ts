@@ -5,7 +5,7 @@ import { CollectionService } from './collection.service';
 import { Collection } from './collection';
 
 @Component({
-    selector: 'my-collection-detail',
+    selector: 'app-collection-detail',
     templateUrl: './collection-detail.component.html',
     styleUrls: ['./collection-detail.component.css']
 })
@@ -20,11 +20,11 @@ export class CollectionDetailComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.params.forEach((params: Params) => {
-            let id = +params['id'];
+            const id = +params['id'];
             this.service
                 .get(id)
                 .then(value => this.collection = value);
-        })
+        });
     }
 
     goBack(): void {

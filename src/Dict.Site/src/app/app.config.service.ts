@@ -13,14 +13,14 @@ export class AppConfigService {
     get(key: string): string {
         return this.cookieService.get(key);
     }
-  
-    //TODO check put args
+
+    // TODO check put args
     set(key: string, value: string) {
         this.cookieService.put(key, value);
     }
 
     getCollectionId(): number {
-        let id = this.get(this.ACTIVE_COLLECTION);
+        const id = this.get(this.ACTIVE_COLLECTION);
         return (id) ? +id : null;
     }
 

@@ -7,15 +7,14 @@ import { AppConfigService } from './app.config.service';
 
 
 @Component({
-    //moduleId: module.id,
-    selector: 'my-collections',
+    selector: 'app-collections',
     templateUrl: 'collections.component.html',
     styleUrls: ['collections.component.css']
 })
 export class CollectionsComponent implements OnInit {
     private collections: Collection[];
     private activeItem: Collection;
-    
+
     constructor(
         private service: CollectionService,
         private config: AppConfigService,
@@ -27,7 +26,7 @@ export class CollectionsComponent implements OnInit {
             .then(data => {
                 this.collections = data;
 
-                let id = this.config.getCollectionId();
+                const id = this.config.getCollectionId();
                 this.activeItem = this.collections.find(c => c.id === id);
             });
     }
@@ -46,7 +45,7 @@ export class CollectionsComponent implements OnInit {
         this.service.create(name, description.trim())
             .then(item => {
                 this.collections.push(item);
-                //TODO select active!
+                // TODO select active!
                 this.activeItem = null;
             });
     }
@@ -55,9 +54,9 @@ export class CollectionsComponent implements OnInit {
         this.service
             .delete(item.id)
             .then(() => {
-                this.collections = this.collections.filter(c => c !== item)
+                this.collections = this.collections.filter(c => c !== item);
                 if (this.activeItem === item) {
-                    //TODO select active!
+                    // TODO select active!
                     this.activeItem = null;
                 }
             });

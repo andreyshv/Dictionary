@@ -15,7 +15,7 @@ export class CardService {
     ) { }
 
     getQueue(collectionId: number): Promise<Card[]> {
-        let url = `${this.queueUrl}/${collectionId}`;
+        const url = `${this.queueUrl}/${collectionId}`;
         return this.http
             .get(url)
             .toPromise()
@@ -24,7 +24,7 @@ export class CardService {
     }
 
     getCards(collectionId: number, first: number): Promise<Card[]> {
-        let url = `${this.collectionUrl}/${collectionId}?first=${first}&count=20`;
+        const url = `${this.collectionUrl}/${collectionId}?first=${first}&count=20`;
         return this.http
             .get(url)
             .toPromise()
@@ -33,7 +33,7 @@ export class CardService {
     }
 
     get(cardId: number): Promise<Card> {
-        let url = `${this.cardsUrl}/${cardId}`;
+        const url = `${this.cardsUrl}/${cardId}`;
         return this.http
             .get(url)
             .toPromise()
@@ -48,7 +48,7 @@ export class CardService {
             .then(() => card)
             .catch(this.handleError);
     }
-    
+
     update(card: Card): Promise<Card> {
         return this.http
             .put(`${this.cardsUrl}/${card.id}`, JSON.stringify(card), { headers: this.headers })
@@ -57,7 +57,7 @@ export class CardService {
             .catch(this.handleError);
     }
 
-    //TODO implement error handling
+    // TODO implement error handling
     private handleError(error: any): Promise<any> {
         console.error('An error occured ', error);
         return Promise.reject(error.message || error);

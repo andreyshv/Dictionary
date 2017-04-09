@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-    selector: 'loading-container',
-    //templateUrl: 'loading-container.component.html'
+    selector: 'app-loading-container',
+    // templateUrl: 'loading-container.component.html'
     template: '<md-spinner *ngIf="loading"></md-spinner>'
 })
 export class LoadingContainerComponent {

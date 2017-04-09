@@ -3,13 +3,30 @@ import '@angular/common';
 import '@angular/core';
 import '@angular/forms';
 import '@angular/http';
-import '@angular/material';
 import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
 import '@angular/router';
 
+import '@angular/platform-browser/animations';
+import '@angular/material';
+import '@angular/material/prebuilt-themes/indigo-pink.css';
+
 // RxJS
-import 'rxjs';
+import 'rxjs/Observable';
+
+// Observable class extensions
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/throw';
+
+// Observable operators
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/toPromise';
 
 // Other vendors for example jQuery, Lodash or Bootstrap
 // You can import js, ts, css, sass, ...

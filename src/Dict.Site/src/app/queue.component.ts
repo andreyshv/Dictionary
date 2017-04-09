@@ -5,8 +5,7 @@ import { CardService } from './cards/card.service';
 import { AppConfigService } from './app.config.service';
 
 @Component({
-    //moduleId: module.id,
-    selector: 'my-queue',
+    selector: 'app-queue',
     templateUrl: 'queue.component.html'
 })
 export class QueueComponent implements OnInit {
@@ -17,8 +16,8 @@ export class QueueComponent implements OnInit {
         private config: AppConfigService
     ) { }
 
-    ngOnInit() { 
-        let collectionId = this.config.getCollectionId(); 
+    ngOnInit() {
+        const collectionId = this.config.getCollectionId();
         if (collectionId) {
             this.service.getQueue(collectionId)
                 .then(value => this.cards = value);

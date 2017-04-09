@@ -29,7 +29,7 @@ export class CollectionService {
     }
 
     create(name: string, description: string): Promise<Collection> {
-        let data = JSON.stringify({ name: name, description: description });
+        const data = JSON.stringify({ name: name, description: description });
         return this.http
             .post(this.apiUrl, data, { headers: this.headers })
             .toPromise()
@@ -53,7 +53,7 @@ export class CollectionService {
             .catch(this.handleError);
     }
 
-    //TODO implement error handling
+    // TODO implement error handling
     private handleError(error: any): Promise<any> {
         console.error('An error occured ', error);
         return Promise.reject(error.message || error);

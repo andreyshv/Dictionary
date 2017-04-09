@@ -9,8 +9,7 @@ import { AppConfigService } from '../app.config.service';
 import { LoadingContainerComponent, LoadingPage } from '../../ext/loading-container.component';
 
 @Component({
-    //moduleId: module.id,
-    selector: 'my-cards',
+    selector: 'app-cards',
     templateUrl: 'cards.component.html',
     styleUrls: ['cards.component.scss']
 })
@@ -28,14 +27,14 @@ export class CardsComponent extends LoadingPage implements OnInit {
     }
 
     ngOnInit() {
-        let collectionId = this.config.getCollectionId();
+        const collectionId = this.config.getCollectionId();
         if (collectionId) {
             this.colService.get(collectionId)
                 .then(value => this.collection = value);
 
             this.service.getCards(collectionId, 0)
                 .then(value => {
-                    this.cards = value; 
+                    this.cards = value;
                     this.ready();
                 });
         }
@@ -61,7 +60,7 @@ export class CardsComponent extends LoadingPage implements OnInit {
     }
 
     play(soundURL: string) {
-        let audio = new Audio(soundURL);
+        const audio = new Audio(soundURL);
         audio.play();
     }
 }

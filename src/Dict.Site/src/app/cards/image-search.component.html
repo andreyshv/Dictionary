@@ -6,7 +6,7 @@
 	<div *ngFor="let info of imageInfos"
 			 class="tooltip">
 		<div class="thumbimg"> 
-			<img (click)="select(info.url)" src="{{info.url}}">
+			<img (click)="select(info.url)" src="{{info.url}}"/>
 		</div>
 		<span class="tooltiptext" *ngIf="info.tooltip">{{info.tooltip}}</span>
 	</div>

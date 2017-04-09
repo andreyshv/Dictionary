@@ -5,9 +5,9 @@ import { Card } from './card';
 import { CardService } from './card.service';
 
 @Component({
-    selector: 'card-detail',
-    templateUrl: 'card-detail.component.html',
-    styleUrls: ['card-detail.component.css]']
+    selector: 'app-card-detail',
+    templateUrl: './card-detail.component.html',
+    styleUrls: ['./card-detail.component.css']
 })
 export class CardDetailComponent implements OnInit {
     public card: Card;
@@ -17,9 +17,9 @@ export class CardDetailComponent implements OnInit {
         private route: ActivatedRoute
     ) { }
 
-    ngOnInit() { 
+    ngOnInit() {
         this.route.params.forEach((params: Params) => {
-            let id = +params['id'];
+            const id = +params['id'];
             if (id > 0) {
                 // route = card-detail/:id
                 this.service
@@ -27,11 +27,11 @@ export class CardDetailComponent implements OnInit {
                     .then(value => this.card = value);
             } else {
                 // route = new-card
-                this.card = new Card; 
+                this.card = new Card;
                 this.card.word = params['word'];
                 this.card.collectionId = +params['collectionId'];
             }
-        })        
+        });
     }
 
     save() {

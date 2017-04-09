@@ -1,0 +1,10 @@
+[
+    {
+        "context": [
+            "/api/**",
+            "/media/**"
+        ],
+        "target": "http://localhost:5000",
+        "secure": false
+    }
+]

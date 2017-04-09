@@ -15,10 +15,11 @@ export class MediaSearchService {
     constructor(private http: Http) { }
 
     public searchImages(query: string): Promise<ImageInfo[]> {
-        if (!query || query == '')
+        if (!query || query === '') {
             return null;
+        }
 
-        let url = this.urlTemplate.replace('{cx}', ApiKeys.cx)
+        const url = this.urlTemplate.replace('{cx}', ApiKeys.cx)
                 .replace('{key}', ApiKeys.ApiKey)
                 .replace('{q}', query);
 
@@ -29,13 +30,13 @@ export class MediaSearchService {
     }
 
     private getUrls(obj: any): ImageInfo[] {
-        let urls: ImageInfo[] = [];
+        const urls: ImageInfo[] = [];
         for (let i = 0; i < obj.items.length; i++) {
-            let item = obj.items[i];
-            let thumbs = item.pagemap.cse_thumbnail;
+            const item = obj.items[i];
+            const thumbs = item.pagemap.cse_thumbnail;
             if (thumbs) {
                 urls.push(new ImageInfo(thumbs[0].src, item.htmlSnippet));
-            } 
+            }
         }
 
         return urls;

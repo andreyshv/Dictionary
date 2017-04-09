@@ -8,64 +8,59 @@
     
   },
   "scripts": {
-    "start": "webpack-dev-server --inline --progress",
-    "test": "karma start",
-    "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail"
+    "ng": "ng",
+    "start": "ng serve --proxy-config config/proxy.conf.json",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e" 
   },
+  "private": true, 
   "dependencies": {
-    "@angular/common": "~4.0.0",
-    "@angular/compiler": "~4.0.0",
-    "@angular/core": "~4.0.0",
-    "@angular/forms": "~4.0.0",
-    "@angular/http": "~4.0.0",
-    "@angular/platform-browser": "~4.0.0",
-    "@angular/platform-browser-dynamic": "~4.0.0",
-    "@angular/router": "~4.0.0",
-    "@angular/upgrade": "~4.0.0",
-    "@angular/material": "2.0.0-beta.2",
-
+    "@angular/common": "^4.0.0",
+    "@angular/compiler": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/forms": "^4.0.0",
+    "@angular/http": "^4.0.0",
+    "@angular/platform-browser": "^4.0.0",
+    "@angular/platform-browser-dynamic": "^4.0.0",
+    "@angular/router": "^4.0.0",
+    "@angular/animations": "^4.0.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.2.0",
     "zone.js": "^0.8.5",
 
+    "@angular/material": "2.0.0-beta.3",
     "angular2-cookie": "1.2.6",
     "angular2-infinite-scroll": "^0.3.4",
-
     "bootstrap": "^3.3.7"
   },
   "devDependencies": {
+    "@angular/cli": "1.0.0",
+    "@angular/compiler-cli": "^4.0.0",
     "@types/core-js": "^0.9.39",
     "@types/node": "^7.0.11",
     "@types/jasmine": "^2.5.46",
     
+    "codelyzer": "~2.0.0", 
     "jasmine-core": "^2.5.2",
+    "jasmine-spec-reporter": "~3.2.0",
     "karma": "^1.5.0",
+    "karma-chrome-launcher": "~2.0.0", 
+    "karma-cli": "~1.0.1",
     "karma-jasmine": "^1.1.0",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-webpack": "^2.0.3",
-    "phantomjs-prebuilt": "^2.1.14",
-    "rimraf": "^2.6.1",
-    "typescript": "~2.2.1",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-coverage-istanbul-reporter": "^0.2.0", 
+    "protractor": "~5.1.0",
+    "ts-node": "~2.0.0",
+    "tslint": "~4.5.0",
+    "typescript": "~2.2.0",
 
-    "angular2-template-loader": "^0.6.2",
-    "node-sass": "^4.5.1",
-    "sass-loader": "^6.0.3",
-    "css-loader": "^0.28.0",
-    "style-loader": "^0.16.0",
-    "extract-text-webpack-plugin": "^2.1.0",
-    "file-loader": "^0.11.1",
-    "html-loader": "^0.4.5",
-    "html-webpack-plugin": "^2.28.0",
-    "null-loader": "^0.1.1",
-    "raw-loader": "^0.5.1",
-    "awesome-typescript-loader": "^3.1.2",
-    
-    "webpack": "^2.3.2",
+    "webpack": "^2.3.3",
     "webpack-dev-server": "^2.4.2",
-    "webpack-merge": "^4.1.0",
-
-    "aspnet-webpack": "^1.0.28",
-    "webpack-hot-middleware": "^2.17.0"
+    "file-loader": "^0.11.1",
+    "style-loader": "^0.16.1",
+    "css-loader": "^0.28.0",
+    "sass-loader": "^6.0.3"
   }
 }
