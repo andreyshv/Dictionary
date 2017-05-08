@@ -13,6 +13,11 @@ namespace Logging
             return new MyLogger();
         }
 
+        public static ILogger<T> CreateLogger<T>()
+        {
+            return new GenericLogger<T>();
+        }
+
         public static void RegisterLogger(DbContext context)
         {
             var serviceProvider = context.GetInfrastructure<IServiceProvider>();
@@ -24,6 +29,24 @@ namespace Logging
         { }
 
         private class MyLogger : ILogger
+        {
+            public bool IsEnabled(LogLevel logLevel)
+            {
+                return true;
+            }
+
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+            {
+                Console.WriteLine(formatter(state, exception));
+            }
+
+            public IDisposable BeginScope<TState>(TState state)
+            {
+                return null;
+            }
+        }
+
+        private class GenericLogger<T> : ILogger<T>
         {
             public bool IsEnabled(LogLevel logLevel)
             {

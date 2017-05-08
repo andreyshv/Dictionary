@@ -9,7 +9,7 @@ namespace Dict.Models.UnitTest
 {
     public class CardRepositoryTests
     {
-        private static DbContextOptions<DictContext> CreateNewContextOptions()
+        private DbContextOptions<DictContext> CreateNewContextOptions()
         {
             // Create a fresh service provider, and therefore a fresh 
             // InMemory database instance.
@@ -19,112 +19,113 @@ namespace Dict.Models.UnitTest
 
             // Create a new options instance telling the context to use an
             // InMemory database and the new service provider.
-            var builder = new DbContextOptionsBuilder<DictContext>();
-            builder.UseInMemoryDatabase()
-                   .UseInternalServiceProvider(serviceProvider);
+            var options = new DbContextOptionsBuilder<DictContext>()
+                .UseInMemoryDatabase()
+                .UseInternalServiceProvider(serviceProvider)
+                .Options;
 
-            return builder.Options;
+            return options;
         }
 
-        private int SeedDb(DbContextOptions<DictContext> options, int count, bool expand)
+        private int SeedDb(DbContextOptions<DictContext> options, int count, bool create2Collections)
         {
-            int cId;
+            int collectionId;
             using (var context = new DictContext(options))
             {
                 var c = context.Collections.Add(new Collection { Name = "collection" });
-                cId = c.Entity.Id;
-
-                var m0 = context.Medias.Add(new Media { Name = "m0" }).Entity;
-                var m1 = context.Medias.Add(new Media { Name = "m1" }).Entity;
+                collectionId = c.Entity.Id;
 
                 for (int i = 0; i < count; i++)
                 {
-                    context.Cards.Add(new Card { Word = string.Format("w{0}", i * 2), CollectionId = cId, Sound = m0, Image = (i % 2 == 0 ? m1 : null) });
-                    if (expand)
+                    var snd = context.Files.Add(new FileDescription { Name = $"sound{i}.mp3" }).Entity;
+                    var img = (i % 2 == 0) ? context.Files.Add(new FileDescription { Name = $"image{i}.png" }).Entity : null;
+
+                    context.Cards.Add(new Card { 
+                        Word = $"word{i * 2}", 
+                        CollectionId = collectionId, 
+                        SoundName = snd.Name, 
+                        ImageName =  img?.Name 
+                    });
+
+                    if (create2Collections)
                     {
-                        context.Cards.Add(new Card { Word = string.Format("w{0}", i * 2 + 1), CollectionId = cId + 1 });
+                        context.Cards.Add(new Card { 
+                            Word = $"word{count + i}",
+                            CollectionId = collectionId + 1 
+                        });
                     }
                 }
+
                 context.SaveChanges();
             }
 
-            return cId;
+            return collectionId;
         }
 
-        private object GetPropValue(object obj, string propName)
+        private DictContext GetContext(int count, bool expand, out int collectionId)
+        {
+            var options = CreateNewContextOptions();
+            collectionId = SeedDb(options, count, expand);
+            
+            return new DictContext(options);
+        }
+
+        /*private object GetPropValue(object obj, string propName)
         {
             return obj.GetType().GetProperty(propName).GetValue(obj);
+        }*/
+
+        private ICardRepository GetRepository(DictContext context)
+        {
+            var logger = Logging.ConsoleLoggerProvider.CreateLogger<CardRepository>();
+            var fileRepository = new InMemoryFileRepository();
+            var repository = new CardRepository(context, fileRepository, logger);
+
+            return repository;
         }
 
         [Fact]
-        public void LearnQueue()
+        public void GetLearnQueue()
         {
-            var options = CreateNewContextOptions();
-            int cId = SeedDb(options, 12, true);
-
-            using (var context = new DictContext(options))
+            using (var context = GetContext(12, true, out int collectionId))
             {
-                var repo = new CardRepository(context);
+                var repository = GetRepository(context);
 
-                var r = repo.GetLearnQueueAsync(cId).Result;
+                var r = repository.GetLearnQueueAsync(collectionId).Result;
                 Assert.Equal(10, r.Count());
             }
         }
 
-        [Fact]
-        public void List_With_No_Args()
+        [Theory]
+        [InlineData(0, 0, 6)]
+        [InlineData(0, 5, 5)]
+        [InlineData(5, 5, 1)]
+        public void GetList(int offs, int count, int got)
         {
-            var options = CreateNewContextOptions();
-            int cId = SeedDb(options, 3, true);
-
-            using (var context = new DictContext(options))
-            {
-                var repo = new CardRepository(context);
-                var r = repo.GetListAsync(cId, 0, 0).Result;
-
-                Assert.Equal(3, r.Count());
-            }
-        }
-
-        [Fact]
-        public void List_With_Args()
-        {
-            var options = CreateNewContextOptions();
-            int cId = SeedDb(options, 6, true);
-
-            using (var context = new DictContext(options))
+            using (var context = GetContext(6, true, out int collectionId))
             {
                 // Logging.ConsoleLoggerProvider.RegisterLogger(context);
+                var repository = GetRepository(context);
 
-                var repo = new CardRepository(context);
-
-                var r = repo.GetListAsync(cId, 0, 5).Result;
-                Assert.Equal(5, r.Count());
-
-                r = repo.GetListAsync(cId, 5, 5).Result;
-                Assert.Equal(1, r.Count());
+                var r = repository.GetListAsync(collectionId, offs, count).Result;
+                Assert.Equal(got, r.Count());
             }
         }
 
         [Fact]
         public async void Add()
         {
-            //Given
-            var options = CreateNewContextOptions();
-            SeedDb(options, 0, false);
-
-            using (var context = new DictContext(options))
+            using (var context = GetContext(0, false, out int collectionId))
             {
-                var media = context.Medias.First();
-                var collectionId = context.Collections.First().Id;
-                var item = new Card { Word = "word", CollectionId = collectionId, Image = media };
+                var fileName = "file.ext";
+                var item1 = new Card { Word = "word", CollectionId = collectionId, ImageName = fileName };
 
-                var repo = new CardRepository(context);
-                var item2 = await repo.AddAsync(item);
+                var repository = GetRepository(context);
+                var item2 = await repository.AddAsync(item1);
 
                 // Not null & has Id
                 Assert.NotNull(item2);
-                var id2 = item2.id;
+                var id2 = item2.Id;
                 Assert.NotEqual(0, id2);
 
                 Assert.Equal(1, context.Cards.Count());
@@ -133,9 +134,9 @@ namespace Dict.Models.UnitTest
                 // Not null & has same Id
                 Assert.NotNull(item3);
                 Assert.Equal(id2, item3.Id);
-                Assert.Equal(item3.Word, item.Word);
-                Assert.Equal(item3.CollectionId, collectionId);
-                Assert.Equal(item3.ImageId, media.Id);
+                Assert.Equal(item1.Word, item3.Word);
+                Assert.Equal(collectionId, item3.CollectionId);
+                Assert.Equal(fileName, item3.ImageName);
             }
         }
 
@@ -143,39 +144,56 @@ namespace Dict.Models.UnitTest
         public async void Update()
         {
             //Given
-            var options = CreateNewContextOptions();
-            SeedDb(options, 1, false);
-
-            using (var context = new DictContext(options))
+            using (var context = GetContext(1, false, out int collectionId))
             {
-                var item = context.Cards.FirstOrDefault();
-                var id = item.Id;
+                var item1 = context.Cards.FirstOrDefault();
+                var id = item1.Id;
 
-                var repo = new CardRepository(context);
-                item.Word = "updated word";
-                var res = await repo.UpdateAsync(item);
+                Assert.NotNull(item1.SoundName);
+                
+                var soundName = item1.SoundName;
+                item1.Word = "updated word";
+                item1.ImageName = "/" + FileRepository.MEDIA_DIR + "/new-image.png";
+
+                var repository = GetRepository(context);
+                var res = await repository.UpdateAsync(item1);
 
                 var item2 = context.Cards.FirstOrDefault(c => c.Id == id);
 
-                Assert.Equal(true, res);
+                Assert.True(res);
                 Assert.Equal("updated word", item2.Word);
+                Assert.Equal("new-image.png", item2.ImageName);
+                Assert.Equal(soundName, item2.SoundName);
             }
+        }
+
+        [Fact]
+        public async void Update_with_image_url()
+        {
+            //TODO:
+            /*using (var context = GetContext(1, false, out int collectionId))
+            {
+                var fileName = "/" + FileRepository.MEDIA_DIR + "/file.ext";
+                var item1 = new Card { Word = "word", CollectionId = collectionId, ImageURL = fileName };
+
+                var repository = GetRepository(context);
+                var item2 = await repository.AddAsync(item1);
+
+                Assert.Equal("file.ext", item2.ImageName);
+            }*/
         }
 
         [Fact]
         public async void Update_wrong_item()
         {
             //Given
-            var options = CreateNewContextOptions();
-            SeedDb(options, 1, false);
-
-            using (var context = new DictContext(options))
+            using (var context = GetContext(1, false, out int collectionId))
             {
                 var id = context.Cards.FirstOrDefault().Id;
 
-                var repo = new CardRepository(context);
+                var repository = GetRepository(context);
                 var item2 = new Card {Id = id+1, Word = "updated word" };
-                var res = await repo.UpdateAsync(item2);
+                var res = await repository.UpdateAsync(item2);
 
                 Assert.Equal(false, res);
             }
@@ -185,15 +203,13 @@ namespace Dict.Models.UnitTest
         public async void Delete()
         {
             //Given
-            var options = CreateNewContextOptions();
-            SeedDb(options, 1, false);
-
-            using (var context = new DictContext(options))
+            using (var context = GetContext(1, false, out int collectionId))
             {
-                var item = context.Cards.FirstOrDefault();
+                //Logging.ConsoleLoggerProvider.RegisterLogger(context);
+                var item = context.Cards.First();
                 
-                var repo = new CardRepository(context);
-                await repo.DeleteAsync(item.Id);
+                var repository = GetRepository(context);
+                await repository.DeleteAsync(item.Id);
 
                 Assert.Equal(0, context.Cards.Count());
             }
@@ -203,18 +219,14 @@ namespace Dict.Models.UnitTest
         public async void Find()
         {
             //Given
-            var options = CreateNewContextOptions();
-            SeedDb(options, 1, false);
-
-            using (var context = new DictContext(options))
+            using (var context = GetContext(3, false, out int collectionId))
             {
-                var item = context.Cards.FirstOrDefault();
+                var item1 = context.Cards.Last();
 
-                var repo = new CardRepository(context);
-                var item2 = await repo.FindAsync(item.Id);
+                var repository = GetRepository(context);
+                var item2 = await repository.FindAsync(item1.Id);
 
-                var id =  item2.id;
-                Assert.Equal(item.Id, id);
+                Assert.Equal(item1.Id, item2.Id);
             }
         }
     }
