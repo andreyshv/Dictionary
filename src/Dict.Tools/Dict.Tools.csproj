@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>Dict.Tools</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -9,6 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Dict.Models\Dict.Models.csproj" />
     <ProjectReference Include="..\Dict.WordNet\Dict.WordNet.csproj" />
-    <PackageReference Include="Pomelo.HtmlAgilityPack" Version="1.1.0-*" />
+    <PackageReference Include="cloudscribe.HtmlAgilityPack" Version="1.0.1" />
   </ItemGroup>
 </Project>

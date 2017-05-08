@@ -16,7 +16,6 @@ namespace Import
         public string StorePath { get; private set; }
         public string ContentRootPath { get; private set; }
 
-
         private MD5 md5;
 
         private OptionsWrapper<RepositoryOptions> _options;
@@ -34,22 +33,6 @@ namespace Import
 
             //var arcName = StorePath + "\\media.z";
             // _arc = ZipFile.Open(arcName, ZipArchiveMode.Update);
-        }
-
-        public void PrintDb()
-        {
-            // int i = 0;
-
-            // using (var app = new Models.AppRepository(_options, null))
-            // {
-            //     foreach (var card in app.GetCards())
-            //     {
-            //         if (++i > 10)
-            //             break;
-
-            //         Console.WriteLine($"{card.Word} Img: {card.Image?.Source} Snd: {card.Sound?.Source}");
-            //     }
-            // }
         }
 
         public void ImportCsv(string fileName)
@@ -161,6 +144,22 @@ namespace Import
                 context.SaveChanges();
             }
             Console.WriteLine("Done");
+        }
+
+        public void PrintDb()
+        {
+            // int i = 0;
+
+            // using (var context = DictContext.CreateContext(_options))
+            // {
+            //     foreach (var card in context.Cards)
+            //     {
+            //         if (++i > 10)
+            //             break;
+
+            //         Console.WriteLine($"{card.Word} Img: {card.Image?.Source} Snd: {card.Sound?.Source}");
+            //     }
+            // }
         }
 
         private Collection InitCollection(DictContext context)
