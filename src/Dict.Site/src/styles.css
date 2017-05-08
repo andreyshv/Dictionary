@@ -1,3 +1,7 @@
+/* Angular styles */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('../node_modules/@angular/material/prebuilt-themes/indigo-pink.css');
+
 /* #docregion , quickstart, toh */
 /* Master Styles */
 h1 {

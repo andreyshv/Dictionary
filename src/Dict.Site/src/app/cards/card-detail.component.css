@@ -27,3 +27,8 @@ button:disabled {
   color: #ccc; 
   cursor: auto;
 }
+img {
+    max-width: 120px;
+    max-height: 120px;
+    padding: 4px;
+}
