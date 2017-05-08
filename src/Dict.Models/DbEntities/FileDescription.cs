@@ -7,6 +7,8 @@ namespace Models
         public int Id { get; set; }
         public string Word { get; set; }
         public string FileName { get; set; }
+        public FileType FileType { get; set; }
+        public string Origin { get; set; }
     }
 
     public class FileDescription
