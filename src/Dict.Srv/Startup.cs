@@ -79,8 +79,8 @@ namespace WebDictionary
 
             app.UseStaticFiles(new StaticFileOptions 
             {   //TODO: use single place to store paths
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, Models.CardRepository.MEDIA_DIR)),
-                RequestPath = new PathString("/" + Models.CardRepository.MEDIA_DIR) 
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, Models.FileRepository.MEDIA_DIR)),
+                RequestPath = new PathString("/" + Models.FileRepository.MEDIA_DIR) 
             });
 
             app.UseMvc();
