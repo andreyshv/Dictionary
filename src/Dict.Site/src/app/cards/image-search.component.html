@@ -1,8 +1,8 @@
 <div>
 	<h2>Select Image</h2>
 	<h2>Google search</h2>
-	<input #word value="{{card.word}}" />
-	<button (click)="search(word.value);">Search</button>
+	<input #word value="{{card.word}}" (keyup.enter)="search(word.value)" />
+	<button (click)="search(word.value)">Search</button>
 	<div *ngFor="let info of imageInfos"
 			 class="tooltip">
 		<div class="thumbimg"> 

@@ -2,7 +2,7 @@
 <div *ngIf="collection">
     <h3>{{collection.name}}</h3>
     <h4>{{collection.description}}</h4>
-    <input #word />
+    <input #word (keyup.enter)="add(word.value)"/>
     <button (click)="add(word.value); word.value=''">Add card</button>
 </div>
 <div class="cards-list">
