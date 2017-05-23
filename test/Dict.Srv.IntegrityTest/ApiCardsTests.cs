@@ -17,42 +17,34 @@ namespace IntegrationTests
         [Fact]
         public async Task Add()
         {
-            var item = new CardData
+            var item = new Card
             {
-                word = "card 1",
-                transcription = "transcription 1",
-                translation = "translation 1",
-                collectionId = 1
+                Word = "card 1",
+                Transcription = "transcription 1",
+                Translation = "translation 1",
+                CollectionId = 1
             };
             
             var response = await _fixture.Client.PostAsJsonAsync("/api/cards", item);
             response.EnsureSuccessStatusCode();
 
-            var card = await response.Content.ReadAsJsonAsync<CardData>();
+            var card = await response.Content.ReadAsJsonAsync<Card>();
 
-            Assert.NotEqual(0, card.id);
-            Assert.Equal(item.collectionId, card.collectionId);
-            Assert.Equal(item.word, card.word);
+            Assert.NotEqual(0, card.Id);
+            Assert.Equal(item.CollectionId, card.CollectionId);
+            Assert.Equal(item.Word, card.Word);
         }
 
-        [Fact]
-        public async Task GetList()
+        [Theory]
+        [InlineData("", 10)] // 10 - default list size
+        [InlineData("?first=5&count=5", 5)]
+        public async Task GetList(string parameters, int resultLength)
         {
-            var response = await _fixture.Client.GetAsync("/api/cards/collection/1");
+            var response = await _fixture.Client.GetAsync("/api/cards/collection/1" + parameters);
             response.EnsureSuccessStatusCode();
-            var cards = await response.Content.ReadAsJsonAsync<CardData[]>();
+            var cards = await response.Content.ReadAsJsonAsync<Card[]>();
 
-            Assert.Equal(10, cards.Length); // default list size
-        }
-
-        [Fact]
-        public async Task GetListWithParams()
-        {
-            var response = await _fixture.Client.GetAsync("/api/cards/collection/1?first=5&count=5");
-            response.EnsureSuccessStatusCode();
-            var cards = await response.Content.ReadAsJsonAsync<CardData[]>();
-
-            Assert.Equal(5, cards.Length);
+            Assert.Equal(resultLength, cards.Length); 
         }
 
         [Fact]
@@ -60,21 +52,21 @@ namespace IntegrationTests
         {
             var response = await _fixture.Client.GetAsync("/api/cards/1");
             response.EnsureSuccessStatusCode();
-            var card = await response.Content.ReadAsJsonAsync<CardData>();
+            var card = await response.Content.ReadAsJsonAsync<Card>();
 
-            Assert.Equal(1, card.id);
+            Assert.Equal(1, card.Id);
         }
 
         [Fact]
         public async Task Update()
         {
-            var item = new CardData
+            var item = new Card
             {
-                id = 1,
-                word = "updated",
-                transcription = "transcription 1",
-                translation = "translation 1",
-                collectionId = 1
+                Id = 1,
+                Word = "updated",
+                Transcription = "transcription 1",
+                Translation = "translation 1",
+                CollectionId = 1
             };
             
             var response = await _fixture.Client.PutAsJsonAsync("/api/cards/1", item);
@@ -82,9 +74,9 @@ namespace IntegrationTests
 
             response = await _fixture.Client.GetAsync("/api/cards/1");
             response.EnsureSuccessStatusCode();
-            var card = await response.Content.ReadAsJsonAsync<CardData>();
+            var card = await response.Content.ReadAsJsonAsync<Card>();
 
-            Assert.Equal("updated", card.word);
+            Assert.Equal("updated", card.Word);
         }
 
         [Fact]

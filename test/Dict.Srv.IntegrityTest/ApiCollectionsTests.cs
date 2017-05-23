@@ -11,7 +11,7 @@ namespace IntegrationTests
     //     {
     //         // https://github.com/aspnet/Announcements/issues/149
     //         var deps = DependencyContext.Default;
-    //         Console.WriteLine($"Compilation depenencies");
+    //         Console.WriteLine($"Compilation dependencies");
     //         foreach (var compilationLibrary in deps.CompileLibraries)
     //         {
     //             Console.WriteLine($"\tPackage {compilationLibrary.Name} {compilationLibrary.Version}");
@@ -22,7 +22,7 @@ namespace IntegrationTests
     //             }
     //         }
 
-    //         Console.WriteLine($"Runtime depenencies");
+    //         Console.WriteLine($"Runtime dependencies");
     //         foreach (var compilationLibrary in deps.RuntimeLibraries)
     //         {
     //             Console.WriteLine($"\tPackage {compilationLibrary.Name} {compilationLibrary.Version}");
@@ -77,7 +77,7 @@ namespace IntegrationTests
 
         [Fact]
         [DependOn(nameof(CollectionUpdate))]
-        public async Task CollectionGet()
+        public async Task CollectionGetItem()
         {
             // Get Item
 
@@ -92,7 +92,7 @@ namespace IntegrationTests
         }
 
         [Fact]
-        [DependOn(nameof(CollectionGet))]
+        [DependOn(nameof(CollectionGetItem))]
         public async Task CollectionDelete()
         {
             // Remove Item
