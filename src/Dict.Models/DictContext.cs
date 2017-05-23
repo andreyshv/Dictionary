@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-// EF Core: https://docs.efproject.net/en/latest/intro.html
-
 namespace Models
 {
     public class DictContext : DbContext
@@ -26,18 +24,28 @@ namespace Models
                 .HasIndex(b => b.Word);
         }
 
-        //TODO: remove this?
-        public static DictContext CreateContext(IOptions<RepositoryOptions> options)
+        public static DbContextOptionsBuilder ConfigureOptionsBuilder(DbContextOptionsBuilder builder, string connectionString)
         {
-            var storePath = System.IO.Path.GetFullPath(options.Value.StorePath);
-            var dbName = options.Value.DbName;
+            return builder.UseSqlite(connectionString);
+        }
 
-            string dbFileName = System.IO.Path.Combine(storePath, string.IsNullOrEmpty(dbName) ? "app.db" : dbName);
-            
+        //TODO: remove this?
+        public static DictContext CreateContext(string connectionString, bool createNew)
+        {
+            //var storePath = System.IO.Path.GetFullPath(options.Value.StorePath);
+            //var dbName = options.Value.DbName;
+            //string dbFileName = System.IO.Path.Combine(storePath, string.IsNullOrEmpty(dbName) ? "app.db" : dbName);
+            //var connectionString = string.Format("Filename={0}", dbFileName);
+
             var builder = new DbContextOptionsBuilder<DictContext>();
-            builder.UseSqlite(string.Format("Filename={0}", dbFileName));
+            builder.UseSqlite(connectionString);
 
             var context = new DictContext(builder.Options);
+            if (createNew)
+            {
+                context.Database.EnsureDeleted();
+            }
+
             if (context.Database.EnsureCreated())
             {
                 context.SeedData();
@@ -48,7 +56,8 @@ namespace Models
 
         public void SeedData()
         {
-            Collections.Add(new Collection {Name = "My collection", Description = "Default coolection"});
+            Collections.Add(new Collection {Name = "My collection", Description = "Default collection"});
+            SaveChanges();
         }
     }
 }

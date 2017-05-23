@@ -32,9 +32,9 @@ namespace WebDictionary
         {
             // Setup options
             services.AddOptions();
-            services.Configure<RepositoryOptions>(Configuration.GetSection("Repository"));
+            //services.Configure<RepositoryOptions>(Configuration.GetSection("Repository"));
             
-            services.AddModels();
+            services.AddModels(Configuration.GetConnectionString("DefaultConnection"));
 
             // Add framework services.
             services.AddMvc();
@@ -72,15 +72,18 @@ namespace WebDictionary
                 }
             } 
 
-            var options = new RepositoryOptions();
-            Configuration.GetSection("Repository").Bind(options);
+            //var options = new RepositoryOptions();
+            //Configuration.GetSection("Repository").Bind(options);
 
             // File provider
-
+            
+            string mediaPath = Path.Combine(env.ContentRootPath, Models.FileRepository.MEDIA_DIR);
+            Directory.CreateDirectory(mediaPath);
+            
             app.UseStaticFiles(new StaticFileOptions 
             {   //TODO: use single place to store paths
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, Models.FileRepository.MEDIA_DIR)),
-                RequestPath = new PathString("/" + Models.FileRepository.MEDIA_DIR) 
+                FileProvider = new PhysicalFileProvider(mediaPath),
+                RequestPath = new PathString("/" + Models.FileRepository.MEDIA_DIR)
             });
 
             app.UseMvc();
