@@ -152,8 +152,9 @@ namespace Dict.Models.UnitTest
                 Assert.NotNull(item1.SoundName);
                 
                 var soundName = item1.SoundName;
+                var imageULR = "/" + FileRepository.MEDIA_DIR + "/new-image.png";
                 item1.Word = "updated word";
-                item1.ImageName = "/" + FileRepository.MEDIA_DIR + "/new-image.png";
+                item1.ImageURL = imageULR;
 
                 var repository = GetRepository(context);
                 var res = await repository.UpdateAsync(item1);
@@ -162,16 +163,17 @@ namespace Dict.Models.UnitTest
 
                 Assert.True(res);
                 Assert.Equal("updated word", item2.Word);
+                Assert.Equal(imageULR, item2.ImageURL);
                 Assert.Equal("new-image.png", item2.ImageName);
                 Assert.Equal(soundName, item2.SoundName);
             }
         }
 
-        [Fact]
+        //TODO:
+        /*[Fact]
         public async void Update_with_image_url()
         {
-            //TODO:
-            /*using (var context = GetContext(1, false, out int collectionId))
+            using (var context = GetContext(1, false, out int collectionId))
             {
                 var fileName = "/" + FileRepository.MEDIA_DIR + "/file.ext";
                 var item1 = new Card { Word = "word", CollectionId = collectionId, ImageURL = fileName };
@@ -180,8 +182,8 @@ namespace Dict.Models.UnitTest
                 var item2 = await repository.AddAsync(item1);
 
                 Assert.Equal("file.ext", item2.ImageName);
-            }*/
-        }
+            }
+        }*/
 
         [Fact]
         public async void Update_wrong_item()
@@ -195,7 +197,7 @@ namespace Dict.Models.UnitTest
                 var item2 = new Card {Id = id+1, Word = "updated word" };
                 var res = await repository.UpdateAsync(item2);
 
-                Assert.Equal(false, res);
+                Assert.False(res);
             }
         }
 

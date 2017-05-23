@@ -4,8 +4,11 @@
     {
         static void Main(string[] args)
         {
+            /*
             var ll = new Import.LeoImport();
             ll.ImportCsv("lingualeo-dict-export.csv");
+            */
+
             //ll.LoadMedia();
             //ll.PrintDb();
 

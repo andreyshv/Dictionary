@@ -7,35 +7,15 @@ namespace Models
 {
     public static class ModelsServiceCollectionExtensions
     {
-        public static IServiceCollection AddModels(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddModels(this IServiceCollection services, string connectionString)
         {
-            //TODO: use connection string 
-            serviceCollection.AddDbContext<DictContext>(
-                (provider, builder) => {
-                    var options = provider.GetService<IOptions<RepositoryOptions>>();
-                    var storePath = Path.GetFullPath(options.Value.StorePath);
-                    var dbName = options.Value.DbName;
+            services.AddDbContext<DictContext>((provider, builder) => DictContext.ConfigureOptionsBuilder(builder, connectionString));
 
-                    string dbFileName = Path.Combine(storePath, string.IsNullOrEmpty(dbName) ? "app.db" : dbName);
-                    builder.UseSqlite(string.Format("Filename={0}", dbFileName));
-                } 
-            );
+            services.AddScoped<ICardRepository, CardRepository>();
+            services.AddScoped<IAppRepository, AppRepository>();
+            services.AddScoped<IFileRepository, FileRepository>();
 
-            serviceCollection.AddScoped<ICardRepository, CardRepository>();
-            serviceCollection.AddScoped<IAppRepository, AppRepository>();
-
-            return serviceCollection;
+            return services;
         }
-
-        // public static IServiceCollection AddModels(this IServiceCollection serviceCollection, Action<DbContextOptionsBuilder> optionsAction)
-        // {
-             
-        //     serviceCollection.AddDbContext<DictContext>(optionsAction);
-
-        //     serviceCollection.AddScoped<ICardRepository, CardRepository>();
-        //     serviceCollection.AddScoped<IAppRepository, AppRepository>();
-
-        //     return serviceCollection;
-        // }
     }
 }

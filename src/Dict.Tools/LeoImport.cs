@@ -18,16 +18,13 @@ namespace Import
 
         private MD5 md5;
 
-        private OptionsWrapper<RepositoryOptions> _options;
+        private string _connString;
         //private ZipArchive _arc;
 
         public LeoImport()
         {
-            _options = new OptionsWrapper<RepositoryOptions>(new RepositoryOptions
-            {
-                StorePath = "..\\..\\Shared",
-                DbName = "app.db"
-            });
+            _connString = "";
+
             StorePath = "..\\..\\Shared";
             ContentRootPath = "..\\..\\";
 
@@ -51,7 +48,7 @@ namespace Import
             md5 = MD5.Create();
 
             Console.WriteLine("Import from {0}", fileName);
-            using (var context = DictContext.CreateContext(_options))
+            using (var context = DictContext.CreateContext(_connString, false))
             {
                 var collection = InitCollection(context);
                 var wordsDict = context.Cards.ToDictionary(c => c.Word);
