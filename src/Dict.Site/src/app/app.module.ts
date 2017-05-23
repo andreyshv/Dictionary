@@ -4,7 +4,7 @@ import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { CookieModule } from 'ngx-cookie';
 
 import { AppConfigService } from './app.config.service';
 import { CollectionService } from './collection.service';
@@ -28,6 +28,8 @@ import { routing } from './app.routing';
         FormsModule,
         HttpModule,
         BrowserAnimationsModule,
+        // ext
+        CookieModule.forRoot(),
         // app
         CardsModule,
         routing
@@ -42,7 +44,6 @@ import { routing } from './app.routing';
         DashboardComponent
     ],
     providers: [
-        CookieService,
         AppConfigService,
         CollectionService
     ],
