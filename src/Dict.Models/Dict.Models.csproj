@@ -3,12 +3,11 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>Dict.Models</AssemblyName>
-    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="1.1"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="1.1.*"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.*"/>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1"/>
   </ItemGroup>
 </Project>
