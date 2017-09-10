@@ -8,7 +8,7 @@ namespace Models
     public interface IFileRepository
     {
         // Add archive file, every file named by associated word
-        bool AddArchive(Stream file);
+        int AddArchive(Stream file, string origin);
         // Add single file associated with word
         bool AddFile(Stream file, string word);
         // Add single file associated with word
