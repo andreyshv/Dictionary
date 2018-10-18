@@ -1,4 +1,6 @@
-﻿namespace Dict.Tools
+﻿using System;
+
+namespace Dict.Tools
 {
     class Program
     {
@@ -21,6 +23,17 @@
 
             // TestWordNet.TestJson(@"..\..\shared\wordnet.bson", @"..\..\shared\words.txt");
 
+            var pf = new PostFile();
+            var url = "http://localhost:5000/api/files";
+            var file = "/home/andy/dev/Dictionary/shared/exclude/sound-pack.zip";
+            
+            Console.WriteLine("Start upload");
+            var startTime = DateTime.Now;
+
+            pf.UploadAsync(url, file, null, "zip-archive").Wait();
+            
+            var span = DateTime.Now - startTime;
+            Console.WriteLine($"End upload in {span}");
             //Console.ReadKey();
         }
     }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using System.Security.Cryptography;
+using System.IO.Compression;
 using Microsoft.EntityFrameworkCore;
 
 namespace Models
@@ -30,9 +31,33 @@ namespace Models
 
         #region IFileRepository implementation
         // Add archive file, every file named by associated word
-        public bool AddArchive(Stream file)
-        {
-            throw new NotImplementedException();
+        public int AddArchive(Stream stream, string origin)
+        {   
+            _logger.LogDebug($"AddArchive(); Origin: {origin}");
+            int count = 0;
+
+            try
+            {
+                using (var archive = new ZipArchive(stream))
+                {
+                    foreach (var entry in archive.Entries)
+                    {
+                        _logger.LogDebug($"Read Entry: {entry.Name} Length: {entry.Length}");
+                        using (var entryStream = entry.Open())
+                        {
+                            // ...
+
+                            count++;
+                        }
+                    }
+                }
+            } 
+            catch (Exception e)
+            {
+                _logger.LogWarning("Can't read archive: {0}", e.Message);
+            }
+
+            return count;
         }
 
         // Add single file associated with word

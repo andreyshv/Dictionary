@@ -20,8 +20,8 @@ namespace Dict.Models.UnitTest
             // Create a new options instance telling the context to use an
             // InMemory database and the new service provider.
             var options = new DbContextOptionsBuilder<DictContext>()
-                .UseInMemoryDatabase()
-                .UseInternalServiceProvider(serviceProvider)
+                .UseInMemoryDatabase("TestDB")
+                .UseInternalServiceProvider(serviceProvider) //TODO: remove this!
                 .Options;
 
             return options;

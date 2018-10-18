@@ -10,7 +10,7 @@ namespace Dict.Models.UnitTest
     {
         private List<WordToFile> _files = new List<WordToFile>();
         
-        public bool AddArchive(Stream file)
+        public int AddArchive(Stream file, string origin)
         {
             throw new NotImplementedException();
         }

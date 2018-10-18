@@ -253,7 +253,7 @@ _other proj/
 # app database, wordnet db
 shared/
 # sounds, images
-src/Dict.Srv/media/
+**/media/
 
 # google api keys
 **/api-keys.ts
