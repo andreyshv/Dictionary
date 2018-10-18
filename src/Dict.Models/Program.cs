@@ -1,25 +1,21 @@
 ﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Models
 {
-    // Stub for EF.Tools preview 2
+    // Stub for EF.Tools
     public class Program
     {
         static void Main(string[] args)
         {
         }
 
-        // also in project.json
-        //   "buildOptions": {
-        //    "emitEntryPoint": true
-        //  },
-
         // EF.Tools context factory
-        public class AppContextFactory : IDbContextFactory<DictContext>
+        public class AppContextFactory : IDesignTimeDbContextFactory<DictContext>
         {
-            public DictContext Create(DbContextFactoryOptions options)
+            public DictContext CreateDbContext(string[] args)
             {
                 string dbFileName = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Shared", "app.db");
 
